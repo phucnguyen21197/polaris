@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton, } from '@clerk/nextjs';
+import { Providers } from "@/components/providers";
 import {dark} from "@clerk/themes";
 import { cn } from "@/lib/utils";
 import "./globals.css";
+import { Authenticated } from "convex/react";
 
 
 const inter = Inter({
@@ -29,38 +29,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        theme : dark,
-      }}
-    >
       <html lang="en" suppressHydrationWarning>
         <body
           className={`${inter.variable} ${plexMono.variable} antialiased`}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <header>
-              <Show when='signed-out'>
-                <SignInButton/>
-                <SignUpButton>
-                  <button className="bg-rose-500 text-white p-2 rounded">
-                    Sign Up
-                  </button>
-                </SignUpButton>
-                </Show>
-                <Show when ="signed-in">
-                  <UserButton/>
-                </Show>
-            </header>
-            {children}
-          </ThemeProvider>
+          
+            <Providers>
+                {children}
+            </Providers>
         </body>
       </html>
-    </ClerkProvider>
   );
 }
